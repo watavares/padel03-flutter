@@ -74,7 +74,7 @@ jobs:
           --release
           
     - name: Archive Web build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v5
       with:
         name: web-build-${{ matrix.environment }}
         path: build/web/
@@ -121,7 +121,7 @@ jobs:
           --release
           
     - name: Archive Android builds
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v5
       with:
         name: android-builds
         path: |
@@ -158,7 +158,7 @@ jobs:
           --no-codesign
           
     - name: Archive iOS build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v5
       with:
         name: ios-build
         path: build/ios/iphoneos/Runner.app
