@@ -1,0 +1,167 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'prod'
+        type: choice
+        options:
+        - prod
+        - staging
+
+jobs:
+  # Create release builds
+  release_build:
+    name: Release Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.7'
+        channel: 'stable'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Get version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "environment=prod" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Update version in pubspec.yaml
+      run: |
+        sed -i 's/^version: .*/version: ${{ steps.version.outputs.version }}+${{ github.run_number }}/' pubspec.yaml
+        
+    - name: Build Web Release
+      run: |
+        flutter build web \
+          --target=lib/main_${{ steps.version.outputs.environment }}.dart \
+          --dart-define=ENVIRONMENT=${{ steps.version.outputs.environment }} \
+          --web-renderer canvaskit \
+          --release
+          
+    - name: Archive Web Release
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-release-${{ steps.version.outputs.version }}
+        path: build/web/
+        retention-days: 90
+        
+    - name: Create Release Notes
+      id: release_notes
+      run: |
+        cat > release_notes.md << EOF
+        ## 🚀 Release v${{ steps.version.outputs.version }}
+        
+        ### Environment: ${{ steps.version.outputs.environment }}
+        
+        ### 📦 Build Information
+        - **Flutter Version:** 3.35.7
+        - **Build Number:** ${{ github.run_number }}
+        - **Commit:** ${{ github.sha }}
+        - **Build Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        
+        ### 🏗️ Artifacts
+        - Web application (build/web/)
+        - Source code (zip and tar.gz)
+        
+        ### 🔧 Deployment
+        Deploy to Firebase Hosting:
+        \`\`\`bash
+        firebase use padel03-${{ steps.version.outputs.environment }}
+        firebase deploy --only hosting
+        \`\`\`
+        
+        ### 📱 Platform Support
+        - ✅ Web (Chrome, Firefox, Safari, Edge)
+        - ✅ Android (API 21+)
+        - ✅ iOS (iOS 12+)
+        - ✅ Windows (Windows 10+)
+        - ✅ macOS (macOS 10.14+)
+        - ✅ Linux (Ubuntu 18.04+)
+        EOF
+        
+        echo "release_notes_path=release_notes.md" >> $GITHUB_OUTPUT
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        release_name: Release v${{ steps.version.outputs.version }}
+        body_path: ${{ steps.release_notes.outputs.release_notes_path }}
+        draft: false
+        prerelease: ${{ steps.version.outputs.environment != 'prod' }}
+
+  # Deploy release to Firebase
+  deploy_release:
+    name: Deploy Release
+    runs-on: ubuntu-latest
+    needs: release_build
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Get version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "environment=prod" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Download Release Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: web-release-${{ steps.version.outputs.version }}
+        path: build/web/
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+      
+    - name: Deploy to Firebase Hosting
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      run: |
+        firebase use padel03-${{ steps.version.outputs.environment }}
+        firebase deploy --only hosting --project padel03-${{ steps.version.outputs.environment }}
+        
+    - name: Deployment Success Notification
+      run: |
+        echo "🚀 Successfully deployed v${{ steps.version.outputs.version }} to ${{ steps.version.outputs.environment }} environment"
+        echo "🌐 Web App URL: https://padel03-${{ steps.version.outputs.environment }}.web.app"
