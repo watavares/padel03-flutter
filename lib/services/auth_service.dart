@@ -64,8 +64,9 @@ class AuthService {
   static Future<UserCredential?> signInWithGoogle() async {
     try {
       // Web OAuth client ID from Firebase Console
-      const String webClientId = '703867063585-gb6532om5hk31uij4nr9jdscric9da89.apps.googleusercontent.com';
-      
+      const String webClientId =
+          '703867063585-gb6532om5hk31uij4nr9jdscric9da89.apps.googleusercontent.com';
+
       // Initialize Google Sign In with minimal scopes to avoid People API requirement
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email'], // Only request email scope to avoid People API
@@ -81,7 +82,8 @@ class AuthService {
       }
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Verify we have the required tokens
       if (googleAuth.accessToken == null) {
@@ -96,7 +98,7 @@ class AuthService {
 
       // Sign in to Firebase with the Google credential
       final userCredential = await _auth.signInWithCredential(credential);
-      
+
       print('✅ Google Sign-In successful for: ${userCredential.user?.email}');
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -125,17 +127,19 @@ class AuthService {
       );
 
       // Create an `OAuthCredential` from the credential returned by Apple
-      final oauthCredential = OAuthProvider("apple.com").credential(
-        idToken: appleCredential.identityToken,
-        rawNonce: rawNonce,
-      );
+      final oauthCredential = OAuthProvider(
+        "apple.com",
+      ).credential(idToken: appleCredential.identityToken, rawNonce: rawNonce);
 
       // Sign in to Firebase with the Apple credential
       final userCredential = await _auth.signInWithCredential(oauthCredential);
 
       // Update display name if available from Apple
-      if (appleCredential.givenName != null || appleCredential.familyName != null) {
-        final displayName = '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim();
+      if (appleCredential.givenName != null ||
+          appleCredential.familyName != null) {
+        final displayName =
+            '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'
+                .trim();
         if (displayName.isNotEmpty && userCredential.user != null) {
           await userCredential.user!.updateDisplayName(displayName);
         }
@@ -151,10 +155,15 @@ class AuthService {
 
   // Generate a cryptographically secure random nonce
   static String _generateNonce([int length = 32]) {
-    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
+
   // Check if Google Sign In is available
   static Future<bool> isGoogleSignInAvailable() async {
     try {
@@ -181,7 +190,7 @@ class AuthService {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
       }
-      
+
       // Sign out from Firebase
       await _auth.signOut();
     } catch (e) {
@@ -243,7 +252,7 @@ class AuthService {
   // Handle Firebase Auth exceptions
   static String _handleAuthException(FirebaseAuthException e) {
     print('Firebase Auth Error: ${e.code} - ${e.message}');
-    
+
     switch (e.code) {
       case 'weak-password':
         return 'The password provided is too weak. Please use at least 6 characters.';
@@ -270,7 +279,8 @@ class AuthService {
       case 'requires-recent-login':
         return 'This operation requires recent authentication. Please sign in again.';
       default:
-        return e.message ?? 'An authentication error occurred. Please try again.';
+        return e.message ??
+            'An authentication error occurred. Please try again.';
     }
   }
 }

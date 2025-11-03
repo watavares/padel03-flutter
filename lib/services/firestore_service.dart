@@ -45,9 +45,9 @@ class FirestoreService {
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
       };
-      await FirestoreService.collection(collection)
-          .doc(documentId)
-          .set(docData);
+      await FirestoreService.collection(
+        collection,
+      ).doc(documentId).set(docData);
     } catch (e) {
       throw Exception('Failed to create document with ID: $e');
     }
@@ -59,9 +59,9 @@ class FirestoreService {
     String documentId,
   ) async {
     try {
-      return await FirestoreService.collection(collection)
-          .doc(documentId)
-          .get();
+      return await FirestoreService.collection(
+        collection,
+      ).doc(documentId).get();
     } catch (e) {
       throw Exception('Failed to read document: $e');
     }
@@ -74,13 +74,10 @@ class FirestoreService {
     Map<String, dynamic> data,
   ) async {
     try {
-      final updateData = {
-        ...data,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
-      await FirestoreService.collection(collection)
-          .doc(documentId)
-          .update(updateData);
+      final updateData = {...data, 'updatedAt': FieldValue.serverTimestamp()};
+      await FirestoreService.collection(
+        collection,
+      ).doc(documentId).update(updateData);
     } catch (e) {
       throw Exception('Failed to update document: $e');
     }
@@ -89,9 +86,7 @@ class FirestoreService {
   // Delete document
   static Future<void> delete(String collection, String documentId) async {
     try {
-      await FirestoreService.collection(collection)
-          .doc(documentId)
-          .delete();
+      await FirestoreService.collection(collection).doc(documentId).delete();
     } catch (e) {
       throw Exception('Failed to delete document: $e');
     }
@@ -102,25 +97,28 @@ class FirestoreService {
     String collection,
     String documentId,
   ) {
-    return FirestoreService.collection(collection)
-        .doc(documentId)
-        .snapshots();
+    return FirestoreService.collection(collection).doc(documentId).snapshots();
   }
 
   // Stream collection
   static Stream<QuerySnapshot<Map<String, dynamic>>> streamCollection(
     String collection, {
-    Query<Map<String, dynamic>>? Function(CollectionReference<Map<String, dynamic>>)? queryBuilder,
+    Query<Map<String, dynamic>>? Function(
+      CollectionReference<Map<String, dynamic>>,
+    )?
+    queryBuilder,
   }) {
-    CollectionReference<Map<String, dynamic>> ref = FirestoreService.collection(collection);
-    
+    CollectionReference<Map<String, dynamic>> ref = FirestoreService.collection(
+      collection,
+    );
+
     if (queryBuilder != null) {
       final query = queryBuilder(ref);
       if (query != null) {
         return query.snapshots();
       }
     }
-    
+
     return ref.snapshots();
   }
 
@@ -166,15 +164,22 @@ class FirestoreService {
     await createWithId('users', userId, userData);
   }
 
-  static Future<DocumentSnapshot<Map<String, dynamic>>> getUserProfile(String userId) {
+  static Future<DocumentSnapshot<Map<String, dynamic>>> getUserProfile(
+    String userId,
+  ) {
     return read('users', userId);
   }
 
-  static Stream<DocumentSnapshot<Map<String, dynamic>>> streamUserProfile(String userId) {
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> streamUserProfile(
+    String userId,
+  ) {
     return streamDocument('users', userId);
   }
 
-  static Future<void> updateUserProfile(String userId, Map<String, dynamic> data) {
+  static Future<void> updateUserProfile(
+    String userId,
+    Map<String, dynamic> data,
+  ) {
     return update('users', userId, data);
   }
 

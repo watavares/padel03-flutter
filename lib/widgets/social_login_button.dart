@@ -40,22 +40,14 @@ class _SocialLoginButtonState extends State<SocialLoginButton>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.96,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _opacityAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.8,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.8).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -103,10 +95,7 @@ class _SocialLoginButtonState extends State<SocialLoginButton>
                   color: widget.backgroundColor,
                   borderRadius: BorderRadius.circular(12),
                   border: widget.borderColor != null
-                      ? Border.all(
-                          color: widget.borderColor!,
-                          width: 1.5,
-                        )
+                      ? Border.all(color: widget.borderColor!, width: 1.5)
                       : null,
                   boxShadow: [
                     BoxShadow(
@@ -151,11 +140,7 @@ class _SocialLoginButtonState extends State<SocialLoginButton>
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          widget.icon,
-          color: widget.textColor,
-          size: 20,
-        ),
+        Icon(widget.icon, color: widget.textColor, size: 20),
         const SizedBox(width: 8),
         Text(
           widget.label,
@@ -175,20 +160,14 @@ class GoogleIcon extends StatelessWidget {
   final double size;
   final Color color;
 
-  const GoogleIcon({
-    super.key,
-    this.size = 24,
-    this.color = Colors.black,
-  });
+  const GoogleIcon({super.key, this.size = 24, this.color = Colors.black});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,
       height: size,
-      child: CustomPaint(
-        painter: GoogleIconPainter(color: color),
-      ),
+      child: CustomPaint(painter: GoogleIconPainter(color: color)),
     );
   }
 }
@@ -206,13 +185,16 @@ class GoogleIconPainter extends CustomPainter {
 
     // This is a simplified Google "G" logo
     final path = Path();
-    
+
     // Create a simple "G" shape
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(size.width * 0.1));
-    
+    final rrect = RRect.fromRectAndRadius(
+      rect,
+      Radius.circular(size.width * 0.1),
+    );
+
     path.addRRect(rrect);
-    
+
     // Cut out the inner part to make it look like a "G"
     final innerRect = Rect.fromLTWH(
       size.width * 0.2,
@@ -220,11 +202,14 @@ class GoogleIconPainter extends CustomPainter {
       size.width * 0.6,
       size.height * 0.6,
     );
-    final innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(size.width * 0.05));
-    
+    final innerRRect = RRect.fromRectAndRadius(
+      innerRect,
+      Radius.circular(size.width * 0.05),
+    );
+
     path.addRRect(innerRRect);
     path.fillType = PathFillType.evenOdd;
-    
+
     canvas.drawPath(path, paint);
   }
 

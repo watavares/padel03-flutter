@@ -20,11 +20,11 @@ class _ModernLoginPageState extends State<ModernLoginPage>
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
-  
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  
+
   bool _isLoading = false;
   bool _isSignUp = false;
   bool _isPasswordVisible = false;
@@ -45,30 +45,29 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.0, 0.7, curve: Curves.easeOut),
-    ));
-    
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.3, 1.0, curve: Curves.elasticOut),
-    ));
-    
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.0, 0.7, curve: Curves.easeOut),
+      ),
+    );
+
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: const Interval(0.3, 1.0, curve: Curves.elasticOut),
+          ),
+        );
+
     _animationController.forward();
   }
 
   Future<void> _checkProviderAvailability() async {
     final isGoogleAvailable = await AuthService.isGoogleSignInAvailable();
     final isAppleAvailable = await AuthService.isAppleSignInAvailable();
-    
+
     if (mounted) {
       setState(() {
         _isGoogleAvailable = isGoogleAvailable;
@@ -91,7 +90,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       _message = message;
       _messageType = type;
     });
-    
+
     // Auto-clear success messages after 3 seconds
     if (type == MessageType.success) {
       Future.delayed(const Duration(seconds: 3), () {
@@ -129,8 +128,11 @@ class _ModernLoginPageState extends State<ModernLoginPage>
         await AnalyticsService.logLogin(method: 'google');
         await AnalyticsService.setUserId(credential.user!.uid);
 
-        _showMessage('Welcome back! Signed in with Google successfully.', MessageType.success);
-        
+        _showMessage(
+          'Welcome back! Signed in with Google successfully.',
+          MessageType.success,
+        );
+
         // Add haptic feedback
         HapticFeedback.lightImpact();
       }
@@ -171,7 +173,10 @@ class _ModernLoginPageState extends State<ModernLoginPage>
         await AnalyticsService.logLogin(method: 'apple');
         await AnalyticsService.setUserId(credential.user!.uid);
 
-        _showMessage('Welcome! Signed in with Apple successfully.', MessageType.success);
+        _showMessage(
+          'Welcome! Signed in with Apple successfully.',
+          MessageType.success,
+        );
         HapticFeedback.lightImpact();
       }
     } catch (e) {
@@ -198,7 +203,9 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       final credential = await AuthService.signUpWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text,
-        displayName: _nameController.text.trim().isEmpty ? null : _nameController.text.trim(),
+        displayName: _nameController.text.trim().isEmpty
+            ? null
+            : _nameController.text.trim(),
       );
 
       if (credential?.user != null) {
@@ -249,16 +256,17 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       );
 
       if (credential?.user != null) {
-        await FirestoreService.update(
-          'users',
-          credential!.user!.uid,
-          {'lastLoginAt': DateTime.now().toIso8601String()},
-        );
+        await FirestoreService.update('users', credential!.user!.uid, {
+          'lastLoginAt': DateTime.now().toIso8601String(),
+        });
 
         await AnalyticsService.logLogin(method: 'email');
         await AnalyticsService.setUserId(credential.user!.uid);
 
-        _showMessage('Welcome back! Signed in successfully.', MessageType.success);
+        _showMessage(
+          'Welcome back! Signed in successfully.',
+          MessageType.success,
+        );
         HapticFeedback.lightImpact();
       }
     } catch (e) {
@@ -281,10 +289,10 @@ class _ModernLoginPageState extends State<ModernLoginPage>
     try {
       await AuthService.signOut();
       await AnalyticsService.setUserId(null);
-      
+
       _showMessage('Signed out successfully!', MessageType.success);
       HapticFeedback.lightImpact();
-      
+
       // Clear form
       _emailController.clear();
       _passwordController.clear();
@@ -307,7 +315,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       _message = null;
       _formKey.currentState?.reset();
     });
-    
+
     HapticFeedback.selectionClick();
   }
 
@@ -316,17 +324,17 @@ class _ModernLoginPageState extends State<ModernLoginPage>
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
-    
+
     return Scaffold(
       body: StreamBuilder(
         stream: AuthService.authStateChanges,
         builder: (context, snapshot) {
           final user = snapshot.data;
-          
+
           if (user != null) {
             return _buildUserProfile(user, theme);
           }
-          
+
           return _buildLoginForm(theme, size, isTablet);
         },
       ),
@@ -414,10 +422,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
           height: 80,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                theme.primaryColor,
-                theme.primaryColor.withOpacity(0.7),
-              ],
+              colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
             ),
             shape: BoxShape.circle,
             boxShadow: [
@@ -428,11 +433,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
               ),
             ],
           ),
-          child: const Icon(
-            Icons.sports_tennis,
-            size: 40,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.sports_tennis, size: 40, color: Colors.white),
         ),
         const SizedBox(height: 16),
         Text(
@@ -445,9 +446,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
         const SizedBox(height: 8),
         Text(
           _isSignUp ? 'Create your account' : 'Welcome back',
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: Colors.grey[600],
-          ),
+          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
         ),
       ],
     );
@@ -461,12 +460,14 @@ class _ModernLoginPageState extends State<ModernLoginPage>
             controller: _nameController,
             label: 'Full Name',
             icon: Icons.person_outline,
-            validator: _isSignUp ? (value) {
-              if (value?.isEmpty ?? true) {
-                return 'Please enter your name';
-              }
-              return null;
-            } : null,
+            validator: _isSignUp
+                ? (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  }
+                : null,
           ),
           const SizedBox(height: 16),
         ],
@@ -515,7 +516,9 @@ class _ModernLoginPageState extends State<ModernLoginPage>
     return Column(
       children: [
         CustomButton(
-          onPressed: _isLoading ? null : (_isSignUp ? _signUpWithEmail : _signInWithEmail),
+          onPressed: _isLoading
+              ? null
+              : (_isSignUp ? _signUpWithEmail : _signInWithEmail),
           isLoading: _isLoading,
           text: _isSignUp ? 'Create Account' : 'Sign In',
           style: CustomButtonStyle.primary,
@@ -523,10 +526,15 @@ class _ModernLoginPageState extends State<ModernLoginPage>
         if (!_isSignUp) ...[
           const SizedBox(height: 12),
           TextButton(
-            onPressed: _isLoading ? null : () {
-              // TODO: Implement forgot password
-              _showMessage('Forgot password feature coming soon!', MessageType.info);
-            },
+            onPressed: _isLoading
+                ? null
+                : () {
+                    // TODO: Implement forgot password
+                    _showMessage(
+                      'Forgot password feature coming soon!',
+                      MessageType.info,
+                    );
+                  },
             child: Text(
               'Forgot Password?',
               style: TextStyle(color: theme.primaryColor),
@@ -617,7 +625,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       MessageType.error: Colors.red,
       MessageType.info: theme.primaryColor,
     };
-    
+
     final icons = {
       MessageType.success: Icons.check_circle_outline,
       MessageType.error: Icons.error_outline,
@@ -629,25 +637,16 @@ class _ModernLoginPageState extends State<ModernLoginPage>
       decoration: BoxDecoration(
         color: colors[_messageType]!.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: colors[_messageType]!.withOpacity(0.3),
-        ),
+        border: Border.all(color: colors[_messageType]!.withOpacity(0.3)),
       ),
       child: Row(
         children: [
-          Icon(
-            icons[_messageType],
-            color: colors[_messageType],
-            size: 20,
-          ),
+          Icon(icons[_messageType], color: colors[_messageType], size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               _message!,
-              style: TextStyle(
-                color: colors[_messageType],
-                fontSize: 14,
-              ),
+              style: TextStyle(color: colors[_messageType], fontSize: 14),
             ),
           ),
         ],
@@ -661,10 +660,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            theme.primaryColor.withOpacity(0.1),
-            Colors.white,
-          ],
+          colors: [theme.primaryColor.withOpacity(0.1), Colors.white],
         ),
       ),
       child: SafeArea(
@@ -686,10 +682,10 @@ class _ModernLoginPageState extends State<ModernLoginPage>
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: theme.primaryColor.withOpacity(0.1),
-                        backgroundImage: user.photoURL != null 
-                            ? NetworkImage(user.photoURL!) 
+                        backgroundImage: user.photoURL != null
+                            ? NetworkImage(user.photoURL!)
                             : null,
-                        child: user.photoURL == null 
+                        child: user.photoURL == null
                             ? Icon(
                                 Icons.person,
                                 size: 50,
@@ -724,7 +720,7 @@ class _ModernLoginPageState extends State<ModernLoginPage>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: user.emailVerified 
+                          color: user.emailVerified
                               ? Colors.green.withOpacity(0.1)
                               : Colors.orange.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
@@ -732,7 +728,9 @@ class _ModernLoginPageState extends State<ModernLoginPage>
                         child: Text(
                           user.emailVerified ? 'Verified' : 'Unverified',
                           style: TextStyle(
-                            color: user.emailVerified ? Colors.green : Colors.orange,
+                            color: user.emailVerified
+                                ? Colors.green
+                                : Colors.orange,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),

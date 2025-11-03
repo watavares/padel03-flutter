@@ -23,7 +23,7 @@ class ServiceManager {
           name: 'environment',
           value: AppConfig.environment.name,
         );
-        
+
         await AnalyticsService.setUserProperty(
           name: 'app_version',
           value: '1.0.0', // You can get this from package_info_plus
@@ -41,7 +41,6 @@ class ServiceManager {
 
       _initialized = true;
       print('🚀 ServiceManager: All services initialized successfully');
-      
     } catch (e) {
       print('❌ ServiceManager: Failed to initialize services: $e');
       rethrow;

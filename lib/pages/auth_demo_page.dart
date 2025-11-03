@@ -28,7 +28,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
   Future<void> _checkProviderAvailability() async {
     final isGoogleAvailable = await AuthService.isGoogleSignInAvailable();
     final isAppleAvailable = await AuthService.isAppleSignInAvailable();
-    
+
     setState(() {
       _isGoogleAvailable = isGoogleAvailable;
       _isAppleAvailable = isAppleAvailable;
@@ -59,10 +59,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
           email: credential.user!.email!,
           displayName: credential.user!.displayName,
           photoURL: credential.user!.photoURL,
-          additionalData: {
-            'signUpMethod': 'google',
-            'platform': 'web',
-          },
+          additionalData: {'signUpMethod': 'google', 'platform': 'web'},
         );
 
         // Log analytics event
@@ -100,10 +97,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
           email: credential.user!.email!,
           displayName: credential.user!.displayName,
           photoURL: credential.user!.photoURL,
-          additionalData: {
-            'signUpMethod': 'apple',
-            'platform': 'web',
-          },
+          additionalData: {'signUpMethod': 'apple', 'platform': 'web'},
         );
 
         // Log analytics event
@@ -142,7 +136,9 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
       final credential = await AuthService.signUpWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text,
-        displayName: _nameController.text.trim().isEmpty ? null : _nameController.text.trim(),
+        displayName: _nameController.text.trim().isEmpty
+            ? null
+            : _nameController.text.trim(),
       );
 
       if (credential?.user != null) {
@@ -151,10 +147,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
           userId: credential!.user!.uid,
           email: credential.user!.email!,
           displayName: credential.user!.displayName,
-          additionalData: {
-            'signUpMethod': 'email',
-            'platform': 'web',
-          },
+          additionalData: {'signUpMethod': 'email', 'platform': 'web'},
         );
 
         // Log analytics event
@@ -162,7 +155,8 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
         await AnalyticsService.setUserId(credential.user!.uid);
 
         setState(() {
-          _message = 'Account created successfully! Please check your email for verification.';
+          _message =
+              'Account created successfully! Please check your email for verification.';
         });
       }
     } catch (e) {
@@ -197,11 +191,9 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
 
       if (credential?.user != null) {
         // Update last login in Firestore
-        await FirestoreService.update(
-          'users',
-          credential!.user!.uid,
-          {'lastLoginAt': DateTime.now().toIso8601String()},
-        );
+        await FirestoreService.update('users', credential!.user!.uid, {
+          'lastLoginAt': DateTime.now().toIso8601String(),
+        });
 
         // Log analytics event
         await AnalyticsService.logLogin(method: 'email');
@@ -230,7 +222,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
     try {
       await AuthService.signOut();
       await AnalyticsService.setUserId(null);
-      
+
       setState(() {
         _message = 'Signed out successfully!';
       });
@@ -256,7 +248,7 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
         stream: AuthService.authStateChanges,
         builder: (context, snapshot) {
           final user = snapshot.data;
-          
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -276,7 +268,9 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                           const SizedBox(height: 8),
                           Text('Email: ${user.email}'),
                           Text('UID: ${user.uid}'),
-                          Text('Display Name: ${user.displayName ?? 'Not set'}'),
+                          Text(
+                            'Display Name: ${user.displayName ?? 'Not set'}',
+                          ),
                           Text('Email Verified: ${user.emailVerified}'),
                           const SizedBox(height: 16),
                           ElevatedButton(
@@ -330,11 +324,13 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: _isLoading ? null : _signUp,
-                                  child: _isLoading 
+                                  child: _isLoading
                                       ? const SizedBox(
                                           height: 16,
                                           width: 16,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
                                         )
                                       : const Text('Sign Up'),
                                 ),
@@ -343,11 +339,13 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: _isLoading ? null : _signIn,
-                                  child: _isLoading 
+                                  child: _isLoading
                                       ? const SizedBox(
                                           height: 16,
                                           width: 16,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
                                         )
                                       : const Text('Sign In'),
                                 ),
@@ -367,14 +365,18 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: _isLoading ? null : _signInWithGoogle,
+                                onPressed: _isLoading
+                                    ? null
+                                    : _signInWithGoogle,
                                 icon: const Icon(Icons.g_mobiledata, size: 24),
                                 label: const Text('Continue with Google'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   foregroundColor: Colors.black87,
                                   side: const BorderSide(color: Colors.grey),
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -390,7 +392,9 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black,
                                   foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -401,20 +405,20 @@ class _AuthDemoPageState extends State<AuthDemoPage> {
                     ),
                   ),
                 ],
-                
+
                 if (_message != null) ...[
                   const SizedBox(height: 16),
                   Card(
-                    color: _message!.contains('successfully') 
-                        ? Colors.green.shade50 
+                    color: _message!.contains('successfully')
+                        ? Colors.green.shade50
                         : Colors.red.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
                         _message!,
                         style: TextStyle(
-                          color: _message!.contains('successfully') 
-                              ? Colors.green.shade700 
+                          color: _message!.contains('successfully')
+                              ? Colors.green.shade700
                               : Colors.red.shade700,
                         ),
                       ),

@@ -28,7 +28,7 @@ class _SimpleAuthTestState extends State<SimpleAuthTest> {
       );
 
       setState(() {
-        _status = result != null 
+        _status = result != null
             ? 'SUCCESS: Account created! UID: ${result.user?.uid}'
             : 'FAILED: No result returned';
       });
@@ -56,7 +56,7 @@ class _SimpleAuthTestState extends State<SimpleAuthTest> {
       );
 
       setState(() {
-        _status = result != null 
+        _status = result != null
             ? 'SUCCESS: Signed in! UID: ${result.user?.uid}'
             : 'FAILED: No result returned';
       });
@@ -109,7 +109,7 @@ class _SimpleAuthTestState extends State<SimpleAuthTest> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isLoading ? null : _testEmailSignUp,
-              child: _isLoading 
+              child: _isLoading
                   ? const CircularProgressIndicator()
                   : const Text('Test Sign Up'),
             ),
@@ -136,11 +136,11 @@ class _SimpleAuthTestState extends State<SimpleAuthTest> {
                   Text(
                     _status,
                     style: TextStyle(
-                      color: _status.startsWith('SUCCESS') 
-                          ? Colors.green 
-                          : _status.startsWith('ERROR') 
-                              ? Colors.red 
-                              : Colors.black,
+                      color: _status.startsWith('SUCCESS')
+                          ? Colors.green
+                          : _status.startsWith('ERROR')
+                          ? Colors.red
+                          : Colors.black,
                       fontFamily: 'monospace',
                     ),
                   ),

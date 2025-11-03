@@ -20,13 +20,25 @@ class FirebaseStatusWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
-            _buildStatusRow('Environment', AppConfig.environment.name.toUpperCase()),
+            _buildStatusRow(
+              'Environment',
+              AppConfig.environment.name.toUpperCase(),
+            ),
             _buildStatusRow('App Name', AppConfig.appName),
             _buildStatusRow('Bundle ID', AppConfig.bundleId),
             _buildStatusRow('API Base URL', AppConfig.apiBaseUrl),
-            _buildStatusRow('Firebase', ServiceManager.isInitialized ? 'Connected' : 'Not Connected'),
-            _buildStatusRow('Analytics', AppConfig.enableAnalytics ? 'Enabled' : 'Disabled'),
-            _buildStatusRow('Crashlytics', AppConfig.enableCrashlytics ? 'Enabled' : 'Disabled'),
+            _buildStatusRow(
+              'Firebase',
+              ServiceManager.isInitialized ? 'Connected' : 'Not Connected',
+            ),
+            _buildStatusRow(
+              'Analytics',
+              AppConfig.enableAnalytics ? 'Enabled' : 'Disabled',
+            ),
+            _buildStatusRow(
+              'Crashlytics',
+              AppConfig.enableCrashlytics ? 'Enabled' : 'Disabled',
+            ),
           ],
         ),
       ),
@@ -50,7 +62,7 @@ class FirebaseStatusWidget extends StatelessWidget {
             child: Text(
               value,
               style: TextStyle(
-                color: label == 'Firebase' 
+                color: label == 'Firebase'
                     ? (ServiceManager.isInitialized ? Colors.green : Colors.red)
                     : null,
               ),

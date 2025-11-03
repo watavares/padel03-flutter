@@ -38,7 +38,7 @@ class FirebaseConfig {
     }
   }
 
-  // Staging Firebase Options  
+  // Staging Firebase Options
   static FirebaseOptions _getStagingFirebaseOptions() {
     if (kIsWeb) {
       return staging_options.DefaultFirebaseOptions.web;
