@@ -1,0 +1,3 @@
+@echo off
+echo 🚀 Starting Padel03 in PRODUCTION mode...
+flutter run -t lib/main_prod.dart -d chrome --flavor prod

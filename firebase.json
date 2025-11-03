@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "padel03-prod",
+          "appId": "1:595593582051:android:ea21ae50960ccf0ea0fcd6",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "padel03-prod",
+          "configurations": {
+            "android": "1:595593582051:android:ea21ae50960ccf0ea0fcd6",
+            "ios": "1:595593582051:ios:16d79a31bc6ee204a0fcd6",
+            "macos": "1:595593582051:ios:16d79a31bc6ee204a0fcd6",
+            "web": "1:595593582051:web:af183d17976826cfa0fcd6",
+            "windows": "1:595593582051:web:84948b1126f96127a0fcd6"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}

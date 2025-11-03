@@ -1,0 +1,71 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_padel03 (dev)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            "name": "flutter_padel03 (staging)",
+            "request": "launch",
+            "type": "dart", 
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging"
+            ]
+        },
+        {
+            "name": "flutter_padel03 (prod)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            "name": "flutter_padel03 (dev - chrome)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            "name": "flutter_padel03 (staging - chrome)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_staging.dart", 
+            "args": [
+                "-d",
+                "chrome",
+                "--flavor",
+                "staging"
+            ]
+        },
+        {
+            "name": "flutter_padel03 (prod - chrome)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "-d", 
+                "chrome",
+                "--flavor",
+                "prod"
+            ]
+        }
+    ]
+}

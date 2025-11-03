@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Development environment runner
+echo "🚀 Starting Padel03 in DEVELOPMENT mode..."
+flutter run -t lib/main_dev.dart -d chrome --flavor dev

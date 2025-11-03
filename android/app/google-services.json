@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "595593582051",
+    "project_id": "padel03-prod",
+    "storage_bucket": "padel03-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595593582051:android:ea21ae50960ccf0ea0fcd6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_padel03"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5gIpqI43QGJ5D2pIkm08kkb8FkKEzqyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
