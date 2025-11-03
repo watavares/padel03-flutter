@@ -3,6 +3,7 @@ import 'config/app_config.dart';
 import 'services/service_manager.dart';
 import 'widgets/firebase_status_widget.dart';
 import 'pages/auth_demo_page.dart';
+import 'pages/modern_login_page.dart';
 import 'pages/simple_auth_test.dart';
 
 Future<void> main() async {
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConfig.appName,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
       home: MyHomePage(title: '${AppConfig.appName} - ${AppConfig.environment.name.toUpperCase()}'),
     );
@@ -122,11 +124,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
+                          builder: (context) => const ModernLoginPage(),
+                        ),
+                      );
+                    },
+                    child: const Text('🎨 Modern Login Page'),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
                           builder: (context) => const AuthDemoPage(),
                         ),
                       );
                     },
-                    child: const Text('Try Firebase Auth'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[600],
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('🔧 Original Auth Demo'),
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
@@ -142,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: Colors.orange,
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text('Simple Auth Test'),
+                    child: const Text('⚡ Simple Auth Test'),
                   ),
                 ],
               ),
