@@ -44,7 +44,7 @@ dependencies:
   
   # Additional auth providers
   google_sign_in: ^6.2.1
-  sign_in_with_apple: ^6.1.0
+  sign_in_with_apple: ^7.0.1
   
   # Utilities
   crypto: ^3.0.3
