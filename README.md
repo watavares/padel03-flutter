@@ -23,7 +23,7 @@ A comprehensive Flutter application for Padel enthusiasts with multi-environment
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/[YOUR-USERNAME]/padel03-flutter.git
+   git clone https://github.com/watavares/padel03-flutter.git
    cd padel03-flutter
    ```
 
