@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  
+
   bool _isFocused = false;
   bool _hasError = false;
   late FocusNode _focusNode;
@@ -51,18 +51,14 @@ class _CustomTextFieldState extends State<CustomTextField>
     super.initState();
     _focusNode = FocusNode();
     _focusNode.addListener(_onFocusChange);
-    
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.02,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.02).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -77,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField>
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
-    
+
     if (_isFocused) {
       _animationController.forward();
       HapticFeedback.selectionClick();
@@ -89,7 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -196,19 +192,14 @@ class _CustomTextFieldState extends State<CustomTextField>
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.red,
-                        width: 2,
-                      ),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
                     ),
                     filled: true,
                     fillColor: _isFocused
                         ? theme.primaryColor.withOpacity(0.05)
                         : Colors.grey[50],
                     labelStyle: TextStyle(
-                      color: _isFocused
-                          ? theme.primaryColor
-                          : Colors.grey[600],
+                      color: _isFocused ? theme.primaryColor : Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
                     hintStyle: TextStyle(

@@ -18,11 +18,11 @@ class FirebaseService {
       _app = await Firebase.initializeApp(
         options: FirebaseConfig.currentPlatform,
       );
-      
+
       _auth = FirebaseAuth.instanceFor(app: _app!);
       _firestore = FirebaseFirestore.instanceFor(app: _app!);
       _storage = FirebaseStorage.instanceFor(app: _app!);
-      
+
       if (AppConfig.enableAnalytics) {
         _analytics = FirebaseAnalytics.instanceFor(app: _app!);
         // Enable analytics collection
@@ -35,7 +35,9 @@ class FirebaseService {
         cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
       );
 
-      print('Firebase initialized for ${AppConfig.environment.name} environment');
+      print(
+        'Firebase initialized for ${AppConfig.environment.name} environment',
+      );
     } catch (e) {
       print('Error initializing Firebase: $e');
       rethrow;
@@ -44,21 +46,27 @@ class FirebaseService {
 
   static FirebaseAuth get auth {
     if (_auth == null) {
-      throw Exception('Firebase not initialized. Call initializeFirebase() first.');
+      throw Exception(
+        'Firebase not initialized. Call initializeFirebase() first.',
+      );
     }
     return _auth!;
   }
 
   static FirebaseFirestore get firestore {
     if (_firestore == null) {
-      throw Exception('Firebase not initialized. Call initializeFirebase() first.');
+      throw Exception(
+        'Firebase not initialized. Call initializeFirebase() first.',
+      );
     }
     return _firestore!;
   }
 
   static FirebaseStorage get storage {
     if (_storage == null) {
-      throw Exception('Firebase not initialized. Call initializeFirebase() first.');
+      throw Exception(
+        'Firebase not initialized. Call initializeFirebase() first.',
+      );
     }
     return _storage!;
   }
@@ -68,6 +76,6 @@ class FirebaseService {
   }
 
   static String get currentEnvironment => AppConfig.environment.name;
-  
+
   static bool get isInitialized => _app != null;
 }

@@ -8,10 +8,10 @@ import 'pages/simple_auth_test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Set default environment (development)
   AppConfig.setEnvironment(Environment.dev);
-  
+
   // Initialize Firebase
   try {
     await ServiceManager.initialize();
@@ -19,7 +19,7 @@ Future<void> main() async {
     print('Service initialization failed: $e');
     // Continue without Firebase for now
   }
-  
+
   runMainApp();
 }
 
@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: '${AppConfig.appName} - ${AppConfig.environment.name.toUpperCase()}'),
+      home: MyHomePage(
+        title:
+            '${AppConfig.appName} - ${AppConfig.environment.name.toUpperCase()}',
+      ),
     );
   }
 }
@@ -109,7 +112,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Firebase: ${ServiceManager.isInitialized ? "Connected" : "Not Connected"}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ServiceManager.isInitialized ? Colors.green : Colors.red,
+                      color: ServiceManager.isInitialized
+                          ? Colors.green
+                          : Colors.red,
                     ),
                   ),
                   const SizedBox(height: 20),

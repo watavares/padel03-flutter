@@ -38,13 +38,9 @@ class _CustomButtonState extends State<CustomButton>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -70,7 +66,7 @@ class _CustomButtonState extends State<CustomButton>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -138,7 +134,7 @@ class _CustomButtonState extends State<CustomButton>
     final color = widget.style == CustomButtonStyle.primary
         ? Colors.white
         : theme.primaryColor;
-    
+
     return SizedBox(
       width: 20,
       height: 20,
@@ -159,21 +155,15 @@ class _CustomButtonState extends State<CustomButton>
           const SizedBox(width: 8),
           Text(
             widget.text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ],
       );
     }
-    
+
     return Text(
       widget.text,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
     );
   }
 }

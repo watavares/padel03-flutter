@@ -11,7 +11,7 @@ class AnalyticsService {
   // Set user properties
   static Future<void> setUserId(String? userId) async {
     if (!isEnabled) return;
-    
+
     try {
       await _analytics!.setUserId(id: userId);
     } catch (e) {
@@ -24,7 +24,7 @@ class AnalyticsService {
     required String? value,
   }) async {
     if (!isEnabled) return;
-    
+
     try {
       await _analytics!.setUserProperty(name: name, value: value);
     } catch (e) {
@@ -39,7 +39,7 @@ class AnalyticsService {
     Map<String, Object>? parameters,
   }) async {
     if (!isEnabled) return;
-    
+
     try {
       await _analytics!.logScreenView(
         screenName: screenName,
@@ -54,7 +54,7 @@ class AnalyticsService {
   // Authentication events
   static Future<void> logLogin({String? method}) async {
     if (!isEnabled) return;
-    
+
     try {
       await _analytics!.logLogin(loginMethod: method);
     } catch (e) {
@@ -64,7 +64,7 @@ class AnalyticsService {
 
   static Future<void> logSignUp({String? method}) async {
     if (!isEnabled) return;
-    
+
     try {
       await _analytics!.logSignUp(signUpMethod: method ?? 'unknown');
     } catch (e) {
@@ -78,12 +78,9 @@ class AnalyticsService {
     Map<String, Object>? parameters,
   }) async {
     if (!isEnabled) return;
-    
+
     try {
-      await _analytics!.logEvent(
-        name: name,
-        parameters: parameters,
-      );
+      await _analytics!.logEvent(name: name, parameters: parameters);
     } catch (e) {
       print('Analytics logEvent error: $e');
     }
