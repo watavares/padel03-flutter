@@ -141,7 +141,7 @@ jobs:
         fi
         
     - name: Download Release Artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v6
       with:
         name: web-release-${{ steps.version.outputs.version }}
         path: build/web/
