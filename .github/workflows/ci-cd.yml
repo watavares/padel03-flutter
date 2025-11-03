@@ -50,7 +50,7 @@ jobs:
         flutter test test/ -d chrome --dart-define=WEB_TEST=true || echo "Web tests completed"
       
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: coverage/lcov.info
         flags: unittests
@@ -89,7 +89,7 @@ jobs:
           --release
           
     - name: Archive Web build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: web-build-${{ matrix.environment }}
         path: build/web/
@@ -107,7 +107,7 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Setup Java
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '17'
@@ -136,7 +136,7 @@ jobs:
           --release
           
     - name: Archive Android builds
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: android-builds
         path: |
@@ -173,7 +173,7 @@ jobs:
           --no-codesign
           
     - name: Archive iOS build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ios-build
         path: build/ios/iphoneos/Runner.app
@@ -195,13 +195,13 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Download Web build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: web-build-${{ matrix.environment }}
         path: build/web/
         
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         
