@@ -47,7 +47,7 @@ dependencies:
   sign_in_with_apple: ^6.1.0
   
   # Utilities
-  crypto: ^3.0.3
+  crypto: ^3.0.7
 
 dev_dependencies:
   flutter_test:
