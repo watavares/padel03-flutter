@@ -43,6 +43,19 @@ service cloud.firestore {
       allow read, write: if request.auth != null;
     }
     
+    // Allow authenticated users to read and manage lobbies
+    match /dev_lobbies/{document} {
+      allow read, write: if request.auth != null;
+    }
+    
+    match /staging_lobbies/{document} {
+      allow read, write: if request.auth != null;
+    }
+    
+    match /prod_lobbies/{document} {
+      allow read, write: if request.auth != null;
+    }
+    
     // Default rule - deny all access
     match /{document=**} {
       allow read, write: if false;

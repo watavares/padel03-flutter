@@ -1,7 +1,7 @@
 enum Environment { dev, staging, prod }
 
 class AppConfig {
-  static Environment _environment = Environment.dev;
+  static Environment _environment = Environment.staging;
 
   static Environment get environment => _environment;
 

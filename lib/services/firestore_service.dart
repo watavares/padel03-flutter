@@ -153,6 +153,7 @@ class FirestoreService {
     Map<String, dynamic>? additionalData,
   }) async {
     final userData = {
+      'uid': userId,  // Add the missing uid field
       'email': email,
       'displayName': displayName,
       'photoURL': photoURL,

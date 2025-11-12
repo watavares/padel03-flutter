@@ -1,0 +1,30 @@
+{
+  "projects": {
+    "dev": "padel03-dev",
+    "stg": "padel03-staging",
+    "prod": "padel03-prod"
+  },
+  "targets": {
+    "padel03-dev": {
+      "hosting": {
+        "hosting-dev": [
+          "padel03-dev"
+        ]
+      }
+    },
+    "padel03-staging": {
+      "hosting": {
+        "hosting-stg": [
+          "padel03-staging"
+        ]
+      }
+    },
+    "padel03-prod": {
+      "hosting": {
+        "hosting-prod": [
+          "padel03-prod"
+        ]
+      }
+    }
+  }
+}

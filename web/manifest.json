@@ -1,13 +1,16 @@
 {
-    "name": "flutter_padel03",
-    "short_name": "flutter_padel03",
-    "start_url": ".",
+    "name": "PadelArena - Padel Match Finder",
+    "short_name": "PadelArena",
+    "start_url": "/",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1D556D",
+    "theme_color": "#1D556D",
+    "description": "Find courts, join matches, and climb the padel ladder with PadelArena - the ultimate padel community app.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "scope": "/",
+    "categories": ["sports", "social", "games"],
+    "display_override": ["standalone", "minimal-ui"],
     "icons": [
         {
             "src": "icons/Icon-192.png",
